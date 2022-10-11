@@ -1,0 +1,34 @@
+---
+name: Auto Tag and Release
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: "0"
+
+      - id: auto-tag
+        name: "Bump/tag version"
+        uses: anothrNick/github-tag-action@1.35.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          RELEASE_BRANCHES: main
+          DEFAULT_BUMP: patch
+          INITIAL_VERSION: "0.0.1"
+
+      - name: Create GitHub release
+        uses: ncipollo/release-action@v1
+        if: ${{ steps.check-commit-message.outputs.is-release == 'true' }}
+        with:
+          tag: ${{ steps.auto-tag.outputs.new_tag }}
+          bodyFile: "RELEASE_NOTES.md"
+          token: ${{ secrets.GITHUB_TOKEN }}
