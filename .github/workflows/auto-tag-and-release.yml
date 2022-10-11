@@ -17,7 +17,7 @@ jobs:
 
       - id: auto-tag
         name: "Bump/tag version"
-        uses: anothrNick/github-tag-action@1.35.0
+        uses: anothrNick/github-tag-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
@@ -27,7 +27,6 @@ jobs:
 
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
-        if: ${{ steps.check-commit-message.outputs.is-release == 'true' }}
         with:
           tag: ${{ steps.auto-tag.outputs.new_tag }}
           bodyFile: "RELEASE_NOTES.md"
