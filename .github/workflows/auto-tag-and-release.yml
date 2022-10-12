@@ -24,7 +24,10 @@ jobs:
           RELEASE_BRANCHES: main
           DEFAULT_BUMP: patch
           INITIAL_VERSION: "0.0.1"
-
+      - run: echo "$(git rev-parse --short HEAD) >> mylastcommit.txt
+      
+      - run: cat mylastcommit.txt
+      
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
