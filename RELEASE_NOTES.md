@@ -2,7 +2,7 @@
 
 ## Enhancements
 
-* 
+* This is a MAJOR bump! 
 
 ## Bug Fixes
 
